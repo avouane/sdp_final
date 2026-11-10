@@ -1,12 +1,12 @@
-# 🍽️ Restaurant Ordering System
+# Restaurant Ordering System
 
-A comprehensive Java application built to demonstrate Object-Oriented Design Patterns and Clean Code principles in an e-commerce food ordering workflow.
+A Java application demonstrating software design patterns and clean code principles for a restaurant ordering backend.
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
-The **Restaurant Ordering System** handles end-to-end restaurant management operations:
+The Restaurant Ordering System handles end-to-end restaurant management operations:
 * Dynamic menu creation.
 * Runtime item customization (extra toppings and size upgrades).
 * Automated bill pricing (standard and promotional discounts).
@@ -16,52 +16,84 @@ The **Restaurant Ordering System** handles end-to-end restaurant management oper
 
 ---
 
-## 🚀 Design Patterns Implemented
+## Design Patterns
 
-The architecture integrates **6 Design Patterns** decoupled into distinct Java packages:
-
-| Pattern | Category | Java Package | Key Responsibilities |
+| Pattern | Type | Package | Description |
 |---|---|---|---|
-| **Factory Method** | Creational | `com.restaurant.catalog.factory` | Encapsulates instantiation of menu items into categorized types (`Food`, `Drink`, `Dessert`). |
-| **Decorator** | Structural | `com.restaurant.cart.decorator` | Dynamically wraps `BaseOrderItem` to append extra toppings and size surcharges at runtime. |
-| **Facade** | Structural | `com.restaurant.orders.facade` | Provides a unified entry point (`RestaurantOrderFacade`) coordinating cart, pricing strategies, and order commands. |
-| **Command** | Behavioral | `com.restaurant.orders.command` | Encapsulates order actions (`PlaceOrderCommand`, `CancelOrderCommand`) into executable command objects. |
-| **State** | Behavioral | `com.restaurant.orders.state` | Enforces valid status transitions (`Pending` ➔ `Preparing` ➔ `Ready` ➔ `Completed` / `Cancelled`). |
-| **Observer** | Behavioral | `com.restaurant.notifications.observer` | Automatically notifies subscribed listeners (`KitchenDisplay`, `CustomerNotifier`) upon state changes. |
-| **Strategy** | Behavioral | `com.restaurant.pricing.strategy` | Encapsulates pricing calculation algorithms (`StandardPricing`, `DiscountPricing`). |
+| Factory Method | Creational | com.restaurant.catalog.factory | Instantiates menu items into food, drink, or dessert categories. |
+| Decorator | Structural | com.restaurant.cart.decorator | Wraps base items to add extra toppings and size surcharges. |
+| Facade | Structural | com.restaurant.orders.facade | Simplifies cart, pricing, and command operations behind one class. |
+| Command | Behavioral | com.restaurant.orders.command | Wraps order placement and cancellation into command objects. |
+| State | Behavioral | com.restaurant.orders.state | Manages status changes from pending to completed or cancelled. |
+| Observer | Behavioral | com.restaurant.notifications.observer | Notifies kitchen and customer modules when an order status changes. |
+| Strategy | Behavioral | com.restaurant.pricing.strategy | Calculates final order totals with standard or discount rates. |
 
 ---
 
-## 🏗️ Clean Code & Architecture Principles
+## Clean Code Practices
 
-- **Single Responsibility Principle (SRP):** Classes maintain isolated responsibilities (e.g., `Cart` manages collection storage, `Order` manages lifecycle state).
-- **Open/Closed Principle (OCP):** New toppings or pricing rules can be introduced via decorators or strategies without modifying existing core logic.
-- **Liskov Substitution Principle (LSP):** Decorated `OrderItem` instances can replace base menu items transparently.
-- **Dependency Inversion Principle (DIP):** High-level components depend on interfaces (`PricingStrategy`, `OrderState`, `OrderObserver`).
+- Single Responsibility: Each class handles one clear task.
+- Open/Closed: New toppings or discounts can be added without changing existing code.
+- Interface Segregation: Components depend on small, focused interfaces.
+- Dependency Inversion: High-level logic relies on abstractions rather than concrete classes.
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```text
 restaurant-ordering-system/
 ├── src/
 │   ├── main/java/com/restaurant/
-│   │   ├── app/
-│   │   │   └── RestaurantOrderingApplication.java   # Application entry point
-│   │   ├── cart/
-│   │   │   ├── decorator/                           # Decorator Pattern
-│   │   │   └── model/                               # Cart Domain Model
-│   │   ├── catalog/
-│   │   │   ├── factory/                             # Factory Method Pattern
-│   │   │   └── model/                               # MenuItem Domain Model
-│   │   ├── notifications/
-│   │   │   └── observer/                            # Observer Pattern
-│   │   ├── orders/
-│   │   │   ├── command/                             # Command Pattern
-│   │   │   ├── facade/                              # Facade Pattern
-│   │   │   ├── model/                               # Order Domain Model
-│   │   │   └── state/                               # State Pattern
-│   │   └── pricing/
-│   │       └── strategy/                            # Strategy Pattern
-│   └── test/java/com/restaurant/                    # Unit Test Suites (JUnit 5)
+│   │   │
+│   │   ├── catalog/                          # [Factory Method Pattern]
+│   │   │   ├── factory/MenuItemFactory.java  # Menu item creation factory
+│   │   │   └── model/MenuItem.java           # Base menu item domain model
+│   │   │
+│   │   ├── cart/                             # [Decorator Pattern]
+│   │   │   ├── decorator/
+│   │   │   │   ├── OrderItem.java            # Order item interface
+│   │   │   │   ├── BaseOrderItem.java        # Standard dish item
+│   │   │   │   ├── OrderItemDecorator.java   # Abstract decorator
+│   │   │   │   ├── ExtraToppingDecorator.java# Decorator: extra toppings
+│   │   │   │   └── SizeUpgradeDecorator.java # Decorator: size upgrades
+│   │   │   └── model/Cart.java               # Customer cart model
+│   │   │
+│   │   ├── pricing/                          # [Strategy Pattern]
+│   │   │   └── strategy/
+│   │   │       ├── PricingStrategy.java      # Pricing strategy contract
+│   │   │       ├── StandardPricing.java      # Standard pricing calculation
+│   │   │       └── DiscountPricing.java      # Promotional discount pricing
+│   │   │
+│   │   ├── notifications/                    # [Observer Pattern]
+│   │   │   └── observer/
+│   │   │       ├── OrderObserver.java        # Subscriber interface
+│   │   │       ├── KitchenDisplay.java       # Kitchen subscriber
+│   │   │       └── CustomerNotifier.java     # Customer subscriber
+│   │   │
+│   │   ├── orders/                           # [Facade, State, Command Patterns]
+│   │   │   ├── facade/
+│   │   │   │   └── RestaurantOrderFacade.java# [Facade] Main application interface
+│   │   │   ├── command/
+│   │   │   │   ├── OrderCommand.java         # [Command] Command interface
+│   │   │   │   ├── PlaceOrderCommand.java    # Place order command
+│   │   │   │   └── CancelOrderCommand.java   # Cancel order command
+│   │   │   ├── state/
+│   │   │   │   ├── OrderState.java           # [State] Order state interface
+│   │   │   │   ├── PendingState.java         # Pending status
+│   │   │   │   ├── PreparingState.java       # Preparing status
+│   │   │   │   ├── ReadyState.java           # Ready status
+│   │   │   │   ├── CompletedState.java       # Completed status
+│   │   │   │   └── CancelledState.java       # Cancelled status
+│   │   │   └── model/Order.java              # Order domain model (State & Observer context)
+│   │   │
+│   │   └── app/
+│   │       └── RestaurantOrderingApplication.java # Main application entry point
+│   │
+│   └── test/java/com/restaurant/             # Unit Test Suites (JUnit 5)
+│       ├── catalog/MenuItemFactoryTest.java
+│       ├── cart/DecoratorTest.java
+│       ├── pricing/PricingStrategyTest.java
+│       └── orders/
+│           ├── OrderStateAndObserverTest.java
+│           └── RestaurantOrderFacadeTest.java
