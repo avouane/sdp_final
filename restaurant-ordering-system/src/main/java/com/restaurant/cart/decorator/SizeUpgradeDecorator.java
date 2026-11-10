@@ -2,7 +2,6 @@ package com.restaurant.cart.decorator;
 
 import java.math.BigDecimal;
 
-/** Adds a size label and its surcharge to the wrapped item. */
 public final class SizeUpgradeDecorator extends OrderItemDecorator {
     private final String sizeName;
     private final BigDecimal surcharge;

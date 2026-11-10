@@ -3,7 +3,6 @@ package com.restaurant.cart.decorator;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-/** Base class that forwards the OrderItem contract to the wrapped item. */
 public abstract class OrderItemDecorator implements OrderItem {
     private final OrderItem item;
 

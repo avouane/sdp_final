@@ -3,7 +3,6 @@ package com.restaurant.cart.decorator;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-/** The undecorated item selected from the restaurant menu. */
 public final class BaseOrderItem implements OrderItem {
     private final String name;
     private final String description;

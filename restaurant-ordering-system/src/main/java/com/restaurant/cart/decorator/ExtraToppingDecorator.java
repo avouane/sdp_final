@@ -2,7 +2,6 @@ package com.restaurant.cart.decorator;
 
 import java.math.BigDecimal;
 
-/** Adds one paid or free topping without changing the wrapped item. */
 public final class ExtraToppingDecorator extends OrderItemDecorator {
     private final String toppingName;
     private final BigDecimal toppingPrice;

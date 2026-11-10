@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-/** One end-to-end demonstration of all six design patterns. */
 public class RestaurantOrderingApplication {
     public static void main(String[] args) {
         AtomicInteger nextId = new AtomicInteger(101);
@@ -29,11 +28,9 @@ public class RestaurantOrderingApplication {
         Cart cart = new Cart();
         RestaurantOrderFacade restaurant = new RestaurantOrderFacade(cart, new StandardPricing());
 
-        // Factory: create the menu items.
         MenuItem pizza = MenuItemFactory.createMenuItem("F1", "food", "Pizza", 12.00);
         MenuItem juice = MenuItemFactory.createMenuItem("D1", "drink", "Juice", 4.00);
 
-        // Decorator: customize a menu item without changing the base item.
         OrderItem pizzaItem = new BaseOrderItem(
                 pizza.getName(), "Classic pizza", BigDecimal.valueOf(pizza.getBasePrice()));
         pizzaItem = new SizeUpgradeDecorator(pizzaItem, "Large", new BigDecimal("3.00"));
@@ -49,16 +46,13 @@ public class RestaurantOrderingApplication {
         }
         System.out.println("Subtotal: $" + restaurant.getSubtotal());
 
-        // Strategy: apply the discount through the Facade.
         restaurant.setPricingStrategy(new DiscountPricing(10));
         System.out.println("Total with 10% discount: $" + restaurant.getTotal());
 
-        // Facade + Command: turn the cart into a real order.
         restaurant.placeOrder(
                 (currentCart, total) -> Order.fromCart(nextId.getAndIncrement(), currentCart, total),
                 order -> {
                     latestOrder.set(order);
-                    // Observer: subscribe the kitchen and the customer.
                     order.addObserver(kitchen);
                     order.addObserver(customer);
                     System.out.println("Placed order #" + order.getId() + " (" + order.getStatus() + ")");
@@ -70,17 +64,15 @@ public class RestaurantOrderingApplication {
         if (order == null) {
             throw new IllegalStateException("Order was not created");
         }
-        restaurant.clearCart(); // The order keeps its own copy of the cart items.
+        restaurant.clearCart();
 
-        // State: each successful transition notifies both observers.
-        order.nextState(); // Pending -> Preparing
-        order.nextState(); // Preparing -> Ready
-        order.nextState(); // Ready -> Completed
-        order.nextState(); // Already completed; no change or notification.
+        order.nextState(); 
+        order.nextState(); 
+        order.nextState(); 
+        order.nextState(); 
         System.out.println("Final order #" + order.getId() + ": " + order.getStatus()
                 + ", items: " + order.getItems().size() + ", total: $" + order.getTotal());
 
-        // Also demonstrate the CancelOrderCommand with a second pending order.
         restaurant.addItem(juiceItem);
         restaurant.setPricingStrategy(new StandardPricing());
         restaurant.placeOrder(
