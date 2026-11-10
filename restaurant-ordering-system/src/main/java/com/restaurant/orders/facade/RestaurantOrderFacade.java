@@ -13,7 +13,6 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
-/** Coordinates cart pricing and order commands behind one application-facing API. */
 public final class RestaurantOrderFacade {
     private final Cart cart;
     private PricingStrategy pricingStrategy;
@@ -39,7 +38,6 @@ public final class RestaurantOrderFacade {
         return cart.getSubtotal();
     }
 
-    /** Applies the configured Strategy to the cart subtotal. */
     public BigDecimal getTotal() {
         double pricedAmount = pricingStrategy.calculatePrice(cart.getSubtotal().doubleValue());
         if (!Double.isFinite(pricedAmount) || pricedAmount < 0) {
@@ -52,7 +50,6 @@ public final class RestaurantOrderFacade {
         this.pricingStrategy = Objects.requireNonNull(pricingStrategy, "pricingStrategy");
     }
 
-    /** Prices the cart, creates an order, and executes the existing Command. */
     public void placeOrder(BiFunction<Cart, BigDecimal, Order> orderFactory, Consumer<Order> onOrderPlaced) {
         Objects.requireNonNull(orderFactory, "orderFactory");
         Objects.requireNonNull(onOrderPlaced, "onOrderPlaced");
@@ -60,7 +57,6 @@ public final class RestaurantOrderFacade {
                 .execute();
     }
 
-    /** Creates and executes the existing cancellation Command. */
     public void cancelOrder(Order order, Consumer<Order> cancellationAction) {
         new CancelOrderCommand(order, cancellationAction).execute();
     }

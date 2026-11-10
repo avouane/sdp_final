@@ -7,7 +7,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-/** Creates an Order from a non-empty cart and hands it to the order workflow. */
 public final class PlaceOrderCommand implements OrderCommand {
     private final Cart cart;
     private final Function<Cart, Order> orderFactory;

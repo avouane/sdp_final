@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-/** Mutable customer cart containing customized order items. */
 public final class Cart {
     private final List<OrderItem> items = new ArrayList<>();
 

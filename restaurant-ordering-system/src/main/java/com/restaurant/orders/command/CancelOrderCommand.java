@@ -5,7 +5,6 @@ import com.restaurant.orders.model.Order;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-/** Requests cancellation of an order through the order workflow. */
 public final class CancelOrderCommand implements OrderCommand {
     private final Order order;
     private final Consumer<Order> cancellationAction;

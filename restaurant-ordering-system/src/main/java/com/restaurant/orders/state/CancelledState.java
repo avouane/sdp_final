@@ -2,7 +2,6 @@ package com.restaurant.orders.state;
 
 import com.restaurant.orders.model.Order;
 
-/** Terminal state for an order cancelled before preparation. */
 public class CancelledState implements OrderState {
     @Override
     public String getName() {

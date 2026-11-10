@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** An order snapshot with a state machine and notification subscribers. */
 public class Order {
     private final int id;
     private final List<OrderItem> items;
@@ -38,7 +37,6 @@ public class Order {
         this.state = new PendingState();
     }
 
-    /** Creates a snapshot, so later cart changes will not change the order. */
     public static Order fromCart(int id, Cart cart, BigDecimal total) {
         Objects.requireNonNull(cart, "cart");
         if (cart.isEmpty()) {
@@ -85,7 +83,6 @@ public class Order {
         setState(new CancelledState());
     }
 
-    /** Called when a valid State transition occurs. */
     public void setState(OrderState newState) {
         OrderState checked = Objects.requireNonNull(newState, "state");
         if (state instanceof CompletedState || state instanceof CancelledState) {
